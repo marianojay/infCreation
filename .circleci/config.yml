@@ -130,18 +130,15 @@ jobs:
           # Use $OldBucketID environment variable or mybucket644752792305 below.
           # Similarly, you can create and use $OldStackID environment variable in place of production-distro 
           command: |
-            export OldBucketID=$(cat ~/textfile.txt)
             aws s3 rb "s3://${OldBucketID}" 
       - run: 
           name: Detroy the cloudformation used to create the old bucket
           command: |
-            echo $OldBucketID
-            aws cloudformation delete-stack --stack-name "stack-create-bucket-${OldBucketID}" --region=${AWS_DEFAULT_REGION}
+            aws cloudformation delete-stack --stack-name "stack-create-bucket-${OldBucketID:9:16}" --region=${AWS_DEFAULT_REGION}
       - run: 
           name: Detroy the cloudformation used to create the old stack
           command: |
-            echo $OldBucketID
-            aws cloudformation delete-stack --stack-name "myStack-${OldBucketID}"  --region=${AWS_DEFAULT_REGION}
+             aws cloudformation delete-stack --stack-name "myStack-${OldBucketID:9:16}"  --region=${AWS_DEFAULT_REGION}
 workflows:
 # Name the workflow "welcome"
   Create CF Infrastructure:
