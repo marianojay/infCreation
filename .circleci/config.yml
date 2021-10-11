@@ -31,7 +31,7 @@ jobs:
           command: | 
              aws cloudformation deploy \
              --template-file template.yml \
-             --stack-name myStack-${CIRCLE_WORKFLOW_ID} \
+             --stack-name myStack-${CIRCLE_WORKFLOW_ID:0:8} \
              --region ${AWS_DEFAULT_REGION}
       - destroy_environment 
 workflows:
