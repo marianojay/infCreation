@@ -51,7 +51,7 @@ jobs:
             ansible-playbook -i inventory.txt main.yml
   smoke_test:
     docker:
-      - image: python:3.7-alpine3.11
+      - image: amazon/aws-cli
     steps:
       - checkout
       - run:
