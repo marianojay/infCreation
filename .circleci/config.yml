@@ -14,42 +14,41 @@ commands:
           name: Destroy Environment
           when: on_fail
           command: |
-             echo Destroy the Cloudformation
-#            aws cloudformation delete-stack --stack-name myStack-${CIRCLE_WORKFLOW_ID}
+            aws cloudformation delete-stack --stack-name myStack-${CIRCLE_WORKFLOW_ID}
 # Use a package of configuration called an orb.
 orbs:
   # Declare a dependency on the aws cli
   aws-cli: circleci/aws-cli@2.0.3
 # Orchestrate or schedule a set of jobs
 jobs:
-#  create_infrastructure:
-#    docker:
-#      - image: amazon/aws-cli
-#    steps:
-#      - checkout
-#      - run:
-#          command: | 
-#             aws cloudformation deploy \
-#             --template-file template.yml \
-#             --stack-name myStack-${CIRCLE_WORKFLOW_ID:0:8} \
-#             --region ${AWS_DEFAULT_REGION}
-#      - destroy_environment 
-#  configure_infrastructure: 
-#    docker:
-#      - image: python:3.7-alpine3.11
-#    steps:
-#      - checkout
-#      - add_ssh_keys:
-#          fingerprints: ["04:ba:16:8d:68:13:6f:97:f7:f6:16:ee:c0:be:ec:10"] # From Additional Key added based on udacity.pem
-#      - run:
-#          name: Install dependencies
-#          command: |
-#            # install the dependencies needed for your playbook
-#            apk add --update ansible 
-#      - run:
-#          name: Configure server
-#          command: |
-#            ansible-playbook -i inventory.txt main.yml
+  create_infrastructure:
+    docker:
+      - image: amazon/aws-cli
+    steps:
+      - checkout
+      - run:
+          command: | 
+             aws cloudformation deploy \
+             --template-file template.yml \
+             --stack-name myStack-${CIRCLE_WORKFLOW_ID:0:8} \
+             --region ${AWS_DEFAULT_REGION}
+      - destroy_environment 
+  configure_infrastructure: 
+    docker:
+      - image: python:3.7-alpine3.11
+    steps:
+      - checkout
+      - add_ssh_keys:
+          fingerprints: ["04:ba:16:8d:68:13:6f:97:f7:f6:16:ee:c0:be:ec:10"] # From Additional Key added based on udacity.pem
+      - run:
+          name: Install dependencies
+          command: |
+            # install the dependencies needed for your playbook
+            apk add --update ansible 
+      - run:
+          name: Configure server
+          command: |
+            ansible-playbook -i inventory.txt main.yml
     smoke_test:
       docker:
         - image: python:3.7-alpine3.11
@@ -75,7 +74,7 @@ workflows:
   Create CF Infrastructure:
     # Run the save job in its own container
     jobs:
-#      - create_infrastructure
-#      - configure_infrastructure
-       - smoke_test
+      - create_infrastructure
+      - configure_infrastructure
+      - smoke_test
 
