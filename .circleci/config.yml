@@ -49,26 +49,26 @@ jobs:
           name: Configure server
           command: |
             ansible-playbook -i inventory.txt main.yml
-    smoke_test:
-      docker:
-        - image: python:3.7-alpine3.11
-      steps:
-        - checkout
-        - run:
-            name: Install / Update CURL 
-            command: |
-              apk add --update curl
-        - run: 
-            name: Do Curl
-            command: |
-              URL="https://www.googlemariano.com"
-              if curl -s --head ${URL}
-              then
-                return 0
-              else
-                return 1
-              fi
-        - destroy_environment
+  smoke_test:
+    docker:
+      - image: python:3.7-alpine3.11
+    steps:
+      - checkout
+      - run:
+          name: Install / Update CURL 
+          command: |
+            apk add --update curl
+      - run: 
+          name: Do Curl
+          command: |
+            URL="https://www.googlemariano.com"
+            if curl -s --head ${URL}
+            then
+              return 0
+            else
+              return 1
+            fi
+      - destroy_environment
 workflows:
 # Name the workflow "welcome"
   Create CF Infrastructure:
