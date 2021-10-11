@@ -55,17 +55,20 @@ jobs:
         - image: python:3.7-alpine3.11
       steps:
         - checkout
-          name: Install dependencies
-          command: |
-            # install the dependencies needed for your playbook
-            apk add --update curl
-            URL="https://www.google.com"
-            if curl -s --head ${URL}
-            then
-              return 0
-            else
-              return 1
-            fi
+        - run:
+            name: Install / Update CURL 
+            command: |
+              apk add --update curl
+        - run: 
+            name: Do Curl
+            command: |
+              URL="https://www.google.com"
+              if curl -s --head ${URL}
+              then
+                return 0
+              else
+                return 1
+              fi
 workflows:
 # Name the workflow "welcome"
   Create CF Infrastructure:
