@@ -14,8 +14,8 @@ commands:
           name: Destroy Environment
           when: on_fail
           command: |
-            aws cloudformation delete-stack --stack-name myStack-${CIRCLE_WORKFLOW_ID}
-
+#            aws cloudformation delete-stack --stack-name myStack-${CIRCLE_WORKFLOW_ID}
+             echo "Destroy the CloudFormation"
 # Use a package of configuration called an orb.
 orbs:
   # Declare a dependency on the aws cli
@@ -69,6 +69,8 @@ jobs:
               else
                 return 1
               fi
+        - destroy_environment
+          when: on_fail
 workflows:
 # Name the workflow "welcome"
   Create CF Infrastructure:
