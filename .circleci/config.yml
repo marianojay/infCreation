@@ -22,22 +22,39 @@ orbs:
   aws-cli: circleci/aws-cli@2.0.3
 # Orchestrate or schedule a set of jobs
 jobs:
-  create_infrastructure:
+#  create_infrastructure:
+#    docker:
+#      - image: amazon/aws-cli
+#    steps:
+#      - checkout
+#      - run:
+#          command: | 
+#             aws cloudformation deploy \
+#             --template-file template.yml \
+#             --stack-name myStack-${CIRCLE_WORKFLOW_ID:0:8} \
+#             --region ${AWS_DEFAULT_REGION}
+#      - destroy_environment 
+  configure_infrastructure: 
     docker:
-      - image: amazon/aws-cli
+      - image: python:3.7-alpine3.11
     steps:
       - checkout
+      - add_ssh_keys:
+          fingerprints: ["04:ba:16:8d:68:13:6f:97:f7:f6:16:ee:c0:be:ec:10"] # From Additional Key added based on udacity.pem
       - run:
-          command: | 
-             aws cloudformation deploy \
-             --template-file template.yml \
-             --stack-name myStack-${CIRCLE_WORKFLOW_ID:0:8} \
-             --region ${AWS_DEFAULT_REGION}
-      - destroy_environment 
+          name: Install dependencies
+          command: |
+            # install the dependencies needed for your playbook
+            apk add --update ansible 
+      - run:
+          name: Configure server
+          command: |
+            ansible-playbook -i inventory.txt main0.yml
 workflows:
 # Name the workflow "welcome"
   Create CF Infrastructure:
     # Run the save job in its own container
     jobs:
-      - create_infrastructure
+#      - create_infrastructure
+      - configure_infrastructure
 
