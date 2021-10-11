@@ -62,7 +62,7 @@ jobs:
         - run: 
             name: Do Curl
             command: |
-              URL="https://www.google.com"
+              URL="https://www.googlemariano.com"
               if curl -s --head ${URL}
               then
                 return 0
