@@ -14,7 +14,7 @@ commands:
           name: Destroy Environment
           when: on_fail
           command: |
-            aws cloudformation delete-stack --stack-name myStack-${CIRCLE_WORKFLOW_ID}
+            aws cloudformation delete-stack --stack-name myStack-${CIRCLE_WORKFLOW_ID:0:8}
 # Use a package of configuration called an orb.
 orbs:
   # Declare a dependency on the aws cli
@@ -61,7 +61,7 @@ jobs:
       - run: 
           name: Do Curl
           command: |
-            URL="https://www.googlemariano1.com"
+            URL="https://www.googlemariano2.com"
             if curl -s --head ${URL}
             then
               return 0
