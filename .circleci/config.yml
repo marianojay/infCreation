@@ -61,7 +61,7 @@ jobs:
       - run: 
           name: Do Curl
           command: |
-            URL="https://www.googlemariano2.com"
+            URL="https://www.google.com"
             if curl -s --head ${URL}
             then
               return 0
@@ -139,9 +139,7 @@ workflows:
       - smoke_test:
           requires:
             - configure_infrastructure 
-      - create_and_deploy_front_end:
-          requires:
-            - smoke_test
+      - create_and_deploy_front_end
       - get_last_deployment_id:
           requires:
             - create_and_deploy_front_end
