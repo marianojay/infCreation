@@ -1,6 +1,6 @@
 ---
  - name: Print env variable
-   shell: echo $PATH
+   ansible.builtin.shell: echo $PATH
    register: print_result
 
  - name: print message
